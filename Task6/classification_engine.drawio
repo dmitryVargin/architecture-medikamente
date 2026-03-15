@@ -1,0 +1,159 @@
+<mxfile host="app.diagrams.net" modified="2026-03-15T20:00:00.000Z" agent="draw.io" version="24.0.0">
+  <diagram name="C2 - Data Classification Engine" id="c2-classification-engine">
+    <mxGraphModel dx="1600" dy="1800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="C2: Data Classification Engine — Медикаменте" style="text;html=1;align=center;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="500" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="src_pg" value="PostgreSQL&#xa;(CDC via Debezium)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="140" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="src_1c" value="1С (ERP)&#xa;batch export" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="280" y="80" width="140" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="src_excel" value="Excel files&#xa;(one-time migration)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="80" width="140" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="src_lab" value="Lab Integration&#xa;Service (API)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="680" y="80" width="140" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="kafka" value="INGESTION LAYER&#xa;Apache Kafka&#xa;(TLS-шифрование топиков)&#xa;Retention: 7 дней, RF: 3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;fontStyle=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="200" y="200" width="500" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="arr1" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="src_pg" target="kafka">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr2" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="src_1c" target="kafka">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr3" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="src_excel" target="kafka">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr4" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="src_lab" target="kafka">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="schema_det" value="SCHEMA DETECTOR&#xa;&#xa;Schema drift detection&#xa;Confluent Schema Registry&#xa;Алерт в SIEM при изменении" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=0;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="270" y="320" width="360" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr5" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="kafka" target="schema_det">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="engine_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="100" y="450" width="700" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="engine_title" value="CLASSIFICATION ENGINE (CORE)" style="text;html=1;align=center;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="455" width="350" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rule_clf" value="Rule-based Classifier&#xa;&#xa;Regex: email, телефон,&#xa;ИНН, СНИЛС, паспорт,&#xa;МКБ-10, даты, реквизиты" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="130" y="490" width="240" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="ml_clf" value="ML-based Classifier&#xa;&#xa;spaCy / BERT-multilingual&#xa;Классы: PII, MEDICAL_SECRET,&#xa;FINANCIAL, HR_SENSITIVE, и др.&#xa;Порог: 0.85" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="530" y="490" width="240" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="ensemble" value="ENSEMBLE DECISION&#xa;&#xa;Rule HIGH → принять&#xa;Rule LOW → ML&#xa;ML &lt; 0.85 → UNKNOWN" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;fontStyle=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="340" y="600" width="220" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="arr_r2e" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="rule_clf" target="ensemble">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_m2e" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="ml_clf" target="ensemble">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="arr_sd2eng" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="schema_det" target="engine_box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="metadata" value="METADATA STORE&#xa;&#xa;Apache Atlas / OpenMetadata&#xa;field → tag + confidence + timestamp&#xa;REST API, версионирование" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="250" y="730" width="400" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_e2m" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="ensemble" target="metadata">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="policy" value="POLICY ENGINE&#xa;&#xa;PII → псевдонимизация (UUID)&#xa;MEDICAL_SECRET → AES-256-GCM&#xa;FINANCIAL → токенизация&#xa;HR_SENSITIVE → шифрование + изоляция&#xa;UNKNOWN → блокировка + алерт" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="220" y="860" width="460" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_m2p" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="metadata" target="policy">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="routing" value="ROUTING SERVICE&#xa;&#xa;Все данные: Landing → Bronze → Silver → Gold&#xa;Теги определяют трансформации на каждом переходе&#xa;UNKNOWN → Quarantine Zone" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1020" width="500" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_p2r" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="policy" target="routing">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="medallion_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="1160" width="800" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="medallion_title" value="MEDALLION DATA WAREHOUSE" style="text;html=1;align=center;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="270" y="1165" width="350" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="landing" value="Landing Zone&#xa;(MinIO, AES-256)&#xa;все сырые данные" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="1200" width="130" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="bronze" value="Bronze Layer&#xa;(ClickHouse)&#xa;псевдонимиз.&#xa;зашифровано" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="250" y="1200" width="130" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="silver" value="Silver Layer&#xa;(ClickHouse)&#xa;обезличено&#xa;без идентиф." style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="1200" width="130" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="gold" value="Gold Layer&#xa;(ClickHouse)&#xa;агрегаты&#xa;без PII" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="610" y="1200" width="130" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="arr_l2b" value="" style="endArrow=block;html=1;strokeWidth=2;fillColor=#d80073;strokeColor=#A50040;" edge="1" parent="1" source="landing" target="bronze">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_b2s" value="" style="endArrow=block;html=1;strokeWidth=2;fillColor=#d80073;strokeColor=#A50040;" edge="1" parent="1" source="bronze" target="silver">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_s2g" value="" style="endArrow=block;html=1;strokeWidth=2;fillColor=#d80073;strokeColor=#A50040;" edge="1" parent="1" source="silver" target="gold">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="arr_r2wh" value="" style="endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="routing" target="medallion_box">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="quarantine" value="Quarantine Zone&#xa;UNKNOWN-данные&#xa;Human review queue" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="770" y="1040" width="150" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_r2q" value="UNKNOWN" style="endArrow=block;html=1;strokeWidth=1.5;dashed=1;" edge="1" parent="1" source="routing" target="quarantine">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="siem" value="SIEM&#xa;(алерты)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="820" y="450" width="100" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_sd2siem" value="schema drift" style="endArrow=block;html=1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="schema_det" target="siem">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_q2siem" value="алерт" style="endArrow=block;html=1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="quarantine" target="siem">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="vault" value="HashiCorp&#xa;Vault&#xa;(ключи)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="820" y="870" width="100" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="arr_p2v" value="ключи" style="endArrow=block;html=1;strokeWidth=1;dashed=1;endFill=1;" edge="1" parent="1" source="policy" target="vault">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

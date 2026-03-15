@@ -1,0 +1,159 @@
+<mxfile host="draw.io" modified="2026-03-16T12:00:00.000Z" agent="draw.io" type="device" version="24.0.0">
+  <diagram id="analytical-layer" name="Analytical Layer — Medallion Architecture">
+    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Аналитический слой — Medallion Architecture&#xa;Data Flow Diagram" style="text;html=1;fontSize=16;fontStyle=5;fillColor=none;strokeColor=none;fontColor=#333333;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="600" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="src_pg" value="PostgreSQL&#xa;(оперативные сервисы)" style="shape=cylinder3;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#1168BD;fontColor=#ffffff;strokeColor=#0B4884;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="170" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="src_1c" value="1С&#xa;(ERP / бухгалтерия)" style="shape=cylinder3;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#1168BD;fontColor=#ffffff;strokeColor=#0B4884;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="250" y="60" width="170" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="src_excel" value="Excel-файлы&#xa;(миграция)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#1168BD;fontColor=#ffffff;strokeColor=#0B4884;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="460" y="65" width="160" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="src_lab" value="Lab Integration&#xa;Service" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#1168BD;fontColor=#ffffff;strokeColor=#0B4884;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="660" y="65" width="160" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="src_label" value="Source Systems" style="text;html=1;fontSize=13;fontStyle=5;fillColor=none;strokeColor=none;fontColor=#1168BD;" vertex="1" parent="1">
+          <mxGeometry x="880" y="75" width="140" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cdc" value="CDC (Debezium)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#6C3483;fontColor=#ffffff;strokeColor=#512E5F;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="300" y="170" width="300" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="kafka" value="Apache Kafka (TLS)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1;fillColor=#6C3483;fontColor=#ffffff;strokeColor=#512E5F;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="300" y="240" width="300" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="classification" value="Data Classification Engine&#xa;(тегирование полей: PII, MEDICAL_SECRET, FINANCIAL, INTERNAL, PUBLIC)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#E6A800;fontColor=#000000;strokeColor=#B38600;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="200" y="320" width="500" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="landing" value="Landing Zone&#xa;(MinIO, AES-256)&#xa;сырые данные, 90 дней" style="shape=cylinder3;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#C0392B;fontColor=#ffffff;strokeColor=#922B21;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="340" y="410" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="landing_access" value="DATA_ENGINEER only" style="text;html=1;fontSize=10;fontStyle=2;fillColor=#FADBD8;strokeColor=#C0392B;rounded=1;fontColor=#922B21;" vertex="1" parent="1">
+          <mxGeometry x="590" y="430" width="150" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="spark_batch" value="Apache Spark Job (batch)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#6C3483;fontColor=#ffffff;strokeColor=#512E5F;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="320" y="520" width="260" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bronze" value="Bronze Layer (ClickHouse)&#xa;псевдонимизация: ФИО → UUID&#xa;шифрование MEDICAL_SECRET" style="shape=cylinder3;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#DAA520;fontColor=#000000;strokeColor=#B8860B;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="310" y="585" width="280" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bronze_access" value="DATA_ENGINEER +&#xa;DATA_SCIENTIST (limited)" style="text;html=1;fontSize=10;fontStyle=2;fillColor=#FEF9E7;strokeColor=#B8860B;rounded=1;fontColor=#7D6608;" vertex="1" parent="1">
+          <mxGeometry x="620" y="600" width="180" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="spark_transform" value="Spark Transformation" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#6C3483;fontColor=#ffffff;strokeColor=#512E5F;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="320" y="700" width="260" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="silver" value="Silver Layer (ClickHouse)&#xa;обезличивание, агрегации без PII" style="shape=cylinder3;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#27AE60;fontColor=#ffffff;strokeColor=#1E8449;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="320" y="765" width="260" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="silver_access" value="BI_ANALYST,&#xa;DATA_SCIENTIST" style="text;html=1;fontSize=10;fontStyle=2;fillColor=#D5F5E3;strokeColor=#27AE60;rounded=1;fontColor=#1E8449;" vertex="1" parent="1">
+          <mxGeometry x="620" y="780" width="140" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mv" value="Materialized Views" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#6C3483;fontColor=#ffffff;strokeColor=#512E5F;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="320" y="875" width="260" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gold" value="Gold Layer (ClickHouse)&#xa;финальные агрегаты для BI" style="shape=cylinder3;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#2980B9;fontColor=#ffffff;strokeColor=#1F618D;boundedLbl=1;backgroundOutline=1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="330" y="940" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="gold_access" value="ANALYST, MANAGER, CEO" style="text;html=1;fontSize=10;fontStyle=2;fillColor=#D6EAF8;strokeColor=#2980B9;rounded=1;fontColor=#1F618D;" vertex="1" parent="1">
+          <mxGeometry x="610" y="960" width="170" height="25" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bi_tools" value="BI Tools&#xa;(Superset / Metabase)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1;fillColor=#1168BD;fontColor=#ffffff;strokeColor=#0B4884;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="140" y="955" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ml_sandbox" value="ML / AI Sandbox&#xa;синтетические данные&#xa;differential privacy" style="rounded=1;whiteSpace=wrap;html=1;fontSize=11;fontStyle=1;fillColor=#999999;fontColor=#ffffff;strokeColor=#666666;arcSize=15;" vertex="1" parent="1">
+          <mxGeometry x="40" y="775" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_pg_cdc" value="WAL" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.2;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#333333;" edge="1" source="src_pg" target="cdc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_1c_cdc" value="Adapter" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.4;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#333333;" edge="1" source="src_1c" target="cdc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_excel_cdc" value="File Ingest" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.6;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#333333;" edge="1" source="src_excel" target="cdc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_lab_cdc" value="API / Kafka" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.8;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#333333;" edge="1" source="src_lab" target="cdc" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_cdc_kafka" value="Events" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#6C3483;" edge="1" source="cdc" target="kafka" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_kafka_class" value="Consume (TLS)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#E6A800;" edge="1" source="kafka" target="classification" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_class_landing" value="Classified Data" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#C0392B;" edge="1" source="classification" target="landing" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_landing_spark" value="Read Raw" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#6C3483;" edge="1" source="landing" target="spark_batch" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_spark_bronze" value="Pseudonymize + Encrypt" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#DAA520;" edge="1" source="spark_batch" target="bronze" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_bronze_transform" value="Read Bronze" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#6C3483;" edge="1" source="bronze" target="spark_transform" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_transform_silver" value="Anonymize + Aggregate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#27AE60;" edge="1" source="spark_transform" target="silver" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_silver_mv" value="ClickHouse MV" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#6C3483;" edge="1" source="silver" target="mv" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_mv_gold" value="Final Aggregates" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=9;strokeColor=#2980B9;" edge="1" source="mv" target="gold" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_gold_bi" value="SQL / JDBC" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=9;strokeColor=#1168BD;" edge="1" source="gold" target="bi_tools" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow_silver_ml" value="Synthetic Data&#xa;Differential Privacy" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=9;strokeColor=#999999;" edge="1" source="silver" target="ml_sandbox" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
